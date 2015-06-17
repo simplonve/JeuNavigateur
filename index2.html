@@ -1,0 +1,175 @@
+<html>
+  <script>
+  (function () {
+    // debut du code isole
+
+    var CODE_TOUCHE_BAS = 40;
+    var CODE_TOUCHE_HAUT = 38;
+    var ALLER_BAS = false;
+    var ALLER_HAUT = false;
+
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+      window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+      window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
+      || window[vendors[x] + 'CancelRequestAnimationFrame'];
+    }
+
+    var requestAnimId;
+
+    var canvasTerrainContext;
+    var terrainLongueur = 800;
+    var terrainLargeur = 600;
+    var filetLargeur = 6;
+    var couleurTerrain = "#000000";
+    var couleurFilet = "#FFFFFF";
+    var dessinerTerrain = function() {
+      // le filet
+      canvasTerrainContext.fillStyle = couleurFilet;
+      canvasTerrainContext.fillRect (terrainLongueur/2 - filetLargeur/2, 0, filetLargeur, terrainLargeur);
+    }
+
+    var canvasScoreContext;
+    var positionXScoreJoueur1 = 330;
+    var positionYScoreJoueur1 = 50;
+    var positionXScoreJoueur2 = 435;
+    var positionYScoreJoueur2 = 50;
+    var couleurScore = "#FFFFFF";
+    var afficherScore = function(scoreJoueur1, scoreJoueur2) {
+      canvasScoreContext.font = "50pt serif";
+      canvasScoreContext.fillStyle  = couleurScore;
+      canvasScoreContext.fillText(scoreJoueur1, positionXScoreJoueur1, positionYScoreJoueur1);
+      canvasScoreContext.fillText(scoreJoueur2, positionXScoreJoueur2, positionYScoreJoueur2);
+    }
+
+    var canvasRaquettesContext;
+    var largeurRaquette = 20;
+    var longueurRaquette = 70;
+    var positionXRaquetteA = 30;
+    var positionYRaquetteA = terrainLargeur/2;
+    var positionXRaquetteB = 750;
+    var positionYRaquetteB = terrainLargeur/2;
+    var couleurRaquette = "#FFFFFF";
+    var dessinerRaquettes = function() {
+      // la raquette A
+      canvasRaquettesContext.fillStyle = couleurRaquette;
+      canvasRaquettesContext.fillRect (positionXRaquetteA, positionYRaquetteA, largeurRaquette, longueurRaquette);
+      // la raquette B
+      canvasRaquettesContext.fillStyle = couleurRaquette;
+      canvasRaquettesContext.fillRect (positionXRaquetteB, positionYRaquetteB, largeurRaquette, longueurRaquette);
+    }
+    var animerRaquetteA = function() {
+      if (ALLER_HAUT && positionYRaquetteA > 0)
+        positionYRaquetteA-=5;
+      else if (ALLER_BAS && positionYRaquetteA < terrainLargeur - longueurRaquette)
+        positionYRaquetteA+=5;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var largeurBalle = 10;
+    var positionXBalle = 100;
+    var positionYBalle = 100;
+    var dessinerBalle = function() {
+      canvasRaquettesContext.fillStyle = couleurRaquette;
+      canvasRaquettesContext.fillRect (positionXBalle, positionYBalle, largeurBalle, largeurBalle);
+    }
+    var incrementXBalle = 5;
+    var incrementYBalle = 5;
+    var animerBalle = function() {
+        positionXBalle += incrementXBalle;
+        if ( positionXBalle > terrainLongueur || positionXBalle < 0 ) {
+            incrementXBalle = -incrementXBalle;
+        }
+        positionYBalle += incrementYBalle;
+        if ( positionYBalle > terrainLargeur || positionYBalle < 0 ) {
+            incrementYBalle = -incrementYBalle;
+        }
+        dessinerBalle();
+    }
+
+    var creerCanvasContext = function(name, width, height, zindex, color) {
+      var canvas = window.document.createElement("canvas");
+      canvas.id = name;
+      canvas.style.position = "absolute";
+      if ( color != undefined )
+        canvas.style.background = color;
+      canvas.style.zIndex = zindex;
+      canvas.width = width;
+      canvas.height = height;
+      document.body.appendChild(canvas);
+      return canvas.getContext('2d');
+    }
+
+    var initialisation = function() {
+      // le code de l'initialisation
+      canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainLongueur, terrainLargeur, 0, couleurTerrain);
+      dessinerTerrain();
+
+      canvasScoreContext = creerCanvasContext("canvasScore", terrainLongueur, terrainLargeur, 1);
+      afficherScore(0, 0);
+
+      canvasRaquettesContext = creerCanvasContext("canvasRaquettes", terrainLongueur, terrainLargeur, 1);
+      dessinerRaquettes();
+      dessinerBalle();
+
+      requestAnimId = window.requestAnimationFrame(principale); // premier appel de principale au rafraichissement de la page
+    }
+
+    var principale = function() {
+      // le code du jeu
+      canvasRaquettesContext.clearRect ( 0, 0 , terrainLongueur , terrainLargeur );
+      animerBalle();
+      animerRaquetteA();
+      dessinerRaquettes();
+      requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
+    }
+
+    var onKeyDown = function(event) {
+        if ( event.keyCode == CODE_TOUCHE_BAS ) {
+            ALLER_BAS = true;
+        } else if ( event.keyCode == CODE_TOUCHE_HAUT ) {
+            ALLER_HAUT = true;
+        }
+    }
+
+    var onKeyUp = function(event) {
+        if ( event.keyCode == CODE_TOUCHE_BAS ) {
+            ALLER_BAS = false;
+        } else if ( event.keyCode == CODE_TOUCHE_HAUT ) {
+            ALLER_HAUT = false;
+        }
+    }
+
+        // association des méthodes aux évènements :
+    // onKeyDown = à l'appui de la touche
+    // onKeyUp = au relèvement de la touche
+    window.onkeydown = onKeyDown;
+    window.onkeyup = onKeyUp;
+
+    window.onload = initialisation; // appel de la fonction initialisation au chargement de la page
+
+   // fin du code isole
+  })();
+  </script>
+ <body>
+ </body>
+</html>
