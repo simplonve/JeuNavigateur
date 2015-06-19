@@ -22,13 +22,21 @@
 
     var requestAnimId;
 
+    //images
+    var fond_score = new Image();
+    fond_score.src = 'img/fondgame.svg';
+
+    var fond_jeu = new Image();
+    fond_jeu.src = 'img/ecranbureau.svg';
+
+    var perso = new Image();
+    perso.src = 'img/geekdos.svg';
+
     //les 2 barres vertical
     var canvasTerrainContext;
     var terrainlargeur = 1024;
     var terrainhauteur = 768;
-    var filethauteur = 6;
     var couleurTerrain = "#000000";
-    var couleurFilet = "#008B8B";
 
     //le perso
     var canvasPersosContext;
@@ -59,22 +67,29 @@
     var affichage_score = 'Score : '+score.toString();
     var posXScore = 40;
     var posYScore = 55;
+    var posXScore_final = 400;
+    var posYScore_final = 350;
     var posXTour = 40;
     var posYTour = 100;
-    var tour = 2;
+    var tour = 5;
     var compteur_tour = 'Tour restant : '+tour.toString();
     var couleurScore = '#00FFFF';
+    var affichage_score_final;
     var dessinerScore = function () {
         canvasTerrainContext.font = '25pt serif';
         canvasTerrainContext.fillStyle = couleurScore;
         canvasTerrainContext.fillText (affichage_score, posXScore, posYScore);
         canvasTerrainContext.fillText (compteur_tour, posXTour, posYTour);
     }
-    var afficher_page_scoreFinal = function(){
+    var afficher_page_scoreFinal = function(affichage_score_final){
       canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
-      changeBackground(document.body, "img/fondgame.svg");
+      canvasTerrainContext.drawImage(fond_score, 0, 0);
+      canvasTerrainContext.font = '25pt serif';
+      canvasTerrainContext.fillStyle = couleurScore;
+      canvasTerrainContext.fillText (affichage_score_final, posXScore_final, posYScore_final);
+
       canvasDesc.addEventListener('click', onClick(), false);
     }
 
@@ -162,10 +177,11 @@
     var initialisation = function() {
       // le code de l'initialisation
       randomObjet();
-      canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainlargeur, terrainhauteur, 0, couleurTerrain);
+      canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainlargeur, terrainhauteur, 3);
+      canvasTerrainContext.drawImage(fond_jeu, 0, 0);
       dessinerScore();
 
-      canvasPersosContext = creerCanvasContext("canvasPersos", terrainlargeur, terrainhauteur, 1);
+      canvasPersosContext = creerCanvasContext("canvasPersos", terrainlargeur, terrainhauteur, 4);
       dessinerPersos();
 
       canvasDescContext = creerCanvasContext("canvasDesc", terrainlargeur, terrainhauteur, 2);
@@ -178,11 +194,13 @@
       canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      canvasTerrainContext.drawImage(fond_jeu, 0, 0);
       animerPersoA();
       dessinerPersos();
       dessinerScore();
-      if (tour == 0){
-          afficher_page_scoreFinal();
+      if (tour <= 0){
+          affichage_score_final = 'Votre score est de : '+score.toString()
+          afficher_page_scoreFinal(affichage_score_final);
       }
       if (posYObjetD < 400) {
         dessinerObjet();
