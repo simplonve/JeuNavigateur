@@ -1,0 +1,92 @@
+@font-face{
+	font-family: 'Raleway-Medium';
+	src:url('Raleway-Medium.ttf') format('truetype');
+}
+@-webkit-keyframes rotate {
+  0% {
+        -webkit-transform: rotate(-45deg);
+    }
+
+    50% {
+        -webkit-transform: rotate(45deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(-45deg);
+    }
+}
+@-moz-keyframes rotate {
+  0% {
+        -moz-transform: rotate(-10deg);
+    }
+
+    50% {
+        -moz-transform: rotate(10deg);
+    }
+
+    100% {
+        -moz-transform: rotate(-10deg);
+    }
+}
+html, body{
+	width: 60%;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+}
+h1 {
+	width:100%;
+	display: block;
+	float:left;
+	font-size: 4em;
+	font-family: 'Raleway-Medium';
+}
+.title {
+	position: absolute;
+	width:100%;
+	display: block;
+	margin-left: 30%;
+	margin-top: 10%;
+}
+.visuel {
+	position: absolute;
+	width:100%;
+	float:left;
+	display: block;
+	margin-left: 5%;
+	margin-top: 55%;
+	box-shadow: 10px 0px 100px black;
+}
+.fondnav {
+	position: absolute;
+	width:100%;
+	float:left;
+	display: block;
+	margin-top: 2%;
+	margin-left:172%;
+
+}
+.tete {
+	position: absolute;
+	width:100%;
+	float:left;
+	display: block;
+	margin-left: 46%;
+	margin-top: 65%;
+
+}
+.hover:hover {
+		  -webkit-transform-origin:50% 0%;
+			-webkit-animation: rotate 5s infinite ease-in-out;
+			-moz-transform-origin:50% 100%;
+			-moz-animation: rotate 5s infinite ease-in-out;
+}
+.layout_nav {
+	margin-left:200%;
+	margin-top: 20%;
+	position: absolute;
+	z-index: 1;
+	font-family: 'Raleway-Medium';
+	font-size: 3em;
+}
+
