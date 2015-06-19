@@ -61,7 +61,7 @@
     var posYScore = 55;
     var posXTour = 40;
     var posYTour = 100;
-    var tour = 20;
+    var tour = 2;
     var compteur_tour = 'Tour restant : '+tour.toString();
     var couleurScore = '#00FFFF';
     var dessinerScore = function () {
@@ -69,6 +69,13 @@
         canvasTerrainContext.fillStyle = couleurScore;
         canvasTerrainContext.fillText (affichage_score, posXScore, posYScore);
         canvasTerrainContext.fillText (compteur_tour, posXTour, posYTour);
+    }
+    var afficher_page_scoreFinal = function(){
+      canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      changeBackground(document.body, "img/fondgame.svg");
+      canvasDesc.addEventListener('click', onClick(), false);
     }
 
     var posXObjetD = 682;
@@ -117,12 +124,12 @@
         elements.forEach(function(element) {
             if (y > element.top && y < element.top + element.height
                 && x > element.left && x < element.left + element.width) {
-                score += 1;
+                requestAnimId = window.requestAnimationFrame(principale);
             }
         });
 
     }, false);
-    
+
     // Add element.
     elements.push({
         colour: '#05EFFF',
@@ -172,9 +179,11 @@
       canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       animerPersoA();
-      canvasDesc.addEventListener('click', onClick(), false);
       dessinerPersos();
       dessinerScore();
+      if (tour == 0){
+          afficher_page_scoreFinal();
+      }
       if (posYObjetD < 400) {
         dessinerObjet();
         animerObjet();
