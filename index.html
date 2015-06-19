@@ -135,46 +135,31 @@
       if (posYObjetD < 400) {
         dessinerObjet();
         animerObjet();
-      } else if (positionPersoFinal == 'droite'){
-            if (couleurObjetD == '#4B0082') {
-                score -= 1
-                posYObjetD = 0
-                posYObjetG = 0
-                randomObjet();
-                positionPersoFinal = ''
-                positionXPerso = terrainlargeur/2 - hauteurPerso/2;
-            }
-            else {
-                score += 1
-                posYObjetD = 0
-                posYObjetG = 0
-                randomObjet();
-                positionPersoFinal = ''
-                positionXPerso = terrainlargeur/2 - hauteurPerso/2;
-            }
-      } else if (positionPersoFinal == 'gauche'){
-            if (couleurObjetG = '#4B0082') {
-                score -= 1
-                posYObjetD = 0
-                posYObjetG = 0
-                randomObjet();
-                positionPersoFinal = ''
-                positionXPerso = terrainlargeur/2 - hauteurPerso/2;
-            } else {
-                score += 1
-                posYObjetD = 0
-                posYObjetG = 0
-                randomObjet();
-                positionPersoFinal = ''
-                positionXPerso = terrainlargeur/2 - hauteurPerso/2;
-            }
-        } else {
-            score -= 1
-            posYObjetD = 0
-            posYObjetG = 0
+      }
+      else if (couleurObjetD == '#98FB98' && positionPersoFinal == 'droite'){
+            score += 1;
+            posYObjetD = 0;
+            posYObjetG = 0;
             randomObjet();
-            positionPersoFinal = ''
-        }
+            positionPersoFinal = '';
+            positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+      }
+      else if (couleurObjetG == '#98FB98' && positionPersoFinal == 'gauche'){
+            score += 1;
+            posYObjetD = 0;
+            posYObjetG = 0;
+            randomObjet();
+            positionPersoFinal = '';
+            positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+      }
+      else{
+          score -= 1;
+          posYObjetD = 0;
+          posYObjetG = 0;
+          randomObjet();
+          positionPersoFinal = '';
+          positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+      }
       requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
     }
 
