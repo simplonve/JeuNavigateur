@@ -58,11 +58,16 @@
     var score = 0
     var posXScore = 40
     var posYScore = 55
+    var posXTour = 40
+    var posYTour = 100
+    var tour = 20
+    var compteur_tour = 'Tour restant : ', tour
     var couleurScore = '#00FFFF'
     var dessinerScore = function () {
         canvasTerrainContext.font = '25pt serif';
         canvasTerrainContext.fillStyle = couleurScore;
         canvasTerrainContext.fillText (score, posXScore, posYScore);
+        canvasTerrainContext.fillText (compteur_tour, posXTour, posYTour);
     }
 
     var posXObjetD = 682;
@@ -72,7 +77,6 @@
     var posYObjetG = 0;
     var couleurObjetD;
     var couleurObjetG;
-
     var randomObjet = function() {
         if (Math.random() > 0.5){
             couleurObjetD = '#4B0082'
@@ -143,6 +147,7 @@
             randomObjet();
             positionPersoFinal = '';
             positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+            tour-=1
       }
       else if (couleurObjetG == '#98FB98' && positionPersoFinal == 'gauche'){
             score += 1;
@@ -151,6 +156,7 @@
             randomObjet();
             positionPersoFinal = '';
             positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+            tour-=1
       }
       else{
           score -= 1;
@@ -159,6 +165,7 @@
           randomObjet();
           positionPersoFinal = '';
           positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+          tour-=1
       }
       requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
     }
