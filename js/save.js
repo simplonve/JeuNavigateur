@@ -11,6 +11,7 @@
 
     var CODE_TOUCHE_GAUCHE = 37;
     var CODE_TOUCHE_DROITE = 39;
+    var CODE_TOUCHE_SPACE = 32;
     var ALLER_GAUCHE = false;
     var ALLER_DROITE = false;
     // pour que le requestAnim marche 'partout'
@@ -26,7 +27,7 @@
     //les 2 barres vertical
     var canvasTerrainContext;
     var terrainlargeur = 1024;
-    var terrainhauteur = 800;
+    var terrainhauteur = 768;
     var filethauteur = 6;
     var couleurTerrain = "#000000";
     var couleurFilet = "#008B8B";
@@ -44,20 +45,45 @@
     var canvasPersosContext;
     var hauteurPerso = 40;
     var largeurPerso = 40;
-    var positionXPersoA = terrainlargeur/2 - hauteurPerso/2;
-    var positionYPersoA = 550 ;
+    var positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+    var positionYPerso = 700;
     var couleurPerso = "#8B0000";
+    var positionPersoFinal = "";
     var dessinerPersos = function() {
       // la Perso A
       canvasPersosContext.fillStyle = couleurPerso;
-      canvasPersosContext.fillRect (positionXPersoA, positionYPersoA, hauteurPerso, largeurPerso);
+      canvasPersosContext.fillRect (positionXPerso, positionYPerso, hauteurPerso, largeurPerso);
     }
 
     var animerPersoA = function() {
-      if (ALLER_DROITE && positionXPersoA < (terrainlargeur - largeurPerso))
-        positionXPersoA+=5;
-      else if (ALLER_GAUCHE && positionXPersoA > 0)
-        positionXPersoA-=5;
+      if (ALLER_DROITE){
+        positionXPerso = 682;
+        positionPersoFinal = "droite";
+      }
+      else if (ALLER_GAUCHE){
+        positionXPerso = 341;
+        positionPersoFinal = "gauche";
+      }
+    }
+
+
+    var posXObjetD = 682;
+    var posYObjetD = 0;
+    var tailleObjet = 30;
+    var posXObjetG = 341;
+    var posYObjetG = 0;
+    var couleurObjet ='#4B0082';
+    var dessinerObjet = function(){
+        canvasDescContext.fillStyle = couleurObjet;
+        canvasDescContext.fillRect (posXObjetD, posYObjetD, tailleObjet, tailleObjet);
+
+        canvasDescContext.fillStyle = couleurObjet;
+        canvasDescContext.fillRect (posXObjetG, posYObjetG, tailleObjet, tailleObjet);
+    }
+
+    var animerObjet = function(){
+        posYObjetD+=1;
+        posYObjetG+=1;
     }
 
     //var pour crée canvas
@@ -82,14 +108,21 @@
       canvasPersosContext = creerCanvasContext("canvasPersos", terrainlargeur, terrainhauteur, 1);
       dessinerPersos();
 
+      canvasDescContext = creerCanvasContext("canvasDesc", terrainlargeur, terrainhauteur, 2);
+
       requestAnimId = window.requestAnimationFrame(principale); // premier appel de principale au rafraichissement de la page
     }
 
     var principale = function() {
       // le code du jeu
       canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       animerPersoA();
       dessinerPersos();
+      if (posYObjetD < 400) {
+        dessinerObjet();
+        animerObjet();
+      }
       requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
     }
 

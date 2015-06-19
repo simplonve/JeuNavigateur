@@ -1,123 +1,154 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8"/>
-		<title>jeu_nav</title>
-		<!-- <link rel="stylesheet" href="ja.js"/> -->
-	</head>
-    <script>
-       (function () {
-    // debut du code isole
+		<!doctype html>
+		<html>
+			<head>
+				<meta charset="UTF-8" />
+				<title>Space Game Demo</title>
+			</head>
+			<body>
+				<section>
+					<div>
+						<canvas id="canvas" width="800" height="600">
+							Your browser does not support HTML5.
+						</canvas>
+					</div>
+					<script type="text/javascript">
+		//Start of script
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
 
-    var CODE_TOUCHE_GAUCHE = 37;
-    var CODE_TOUCHE_DROITE = 39;
-    var ALLER_GAUCHE = false;
-    var ALLER_DROITE = false;
+		var x = 400;
+		var y = 0;
+		var direction = 0;
+		var mouseDown = false;
+		var gloop;
+		var shots = new Array;
+		var playerTurret = new (function() { //turret object
+			var that = this;
+			that.draw = function() {
+				ctx.fillStyle = "white";
+				ctx.strokeStyle = "white";
+				ctx.rect(380, 540, 40, 60); //draw base
+				ctx.fill();
 
-    var vendors = ['ms', 'moz', 'webkit', 'o'];
-    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-      window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
-      window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
-      || window[vendors[x] + 'CancelRequestAnimationFrame'];
-    }
+				ctx.beginPath();
+				ctx.arc(400, 540, 20, Math.PI, 2*Math.PI);
+				ctx.fill();
 
-    var requestAnimId;
+				ctx.beginPath();
+				ctx.lineWidth="10";
+				ctx.moveTo(400, 540);
+				var tempX, tempY, temp;
+				temp = getTrajectory(x, y);
+				tempX = 35 * temp[0]; tempY = 35 * temp[1];
+				ctx.lineTo(tempX + 400, 540 - tempY);
+				ctx.stroke();
+			}
+		});
 
-    var canvasTerrainContext;
-    var terrainLongueur = 800;
-    var terrainLargeur = 600;
-    var filetLargeur = 6;
-    var couleurTerrain = "#000000";
-    var couleurFilet = "#008B8B";
-    var dessinerTerrain = function() {
-      // gauche
-      canvasTerrainContext.fillStyle = couleurFilet;
-      canvasTerrainContext.fillRect (terrainLongueur/1.2 - filetLargeur/2, 0, filetLargeur, terrainLargeur);
+		function shotObject(shotX, shotY) {
+			var that = this;
+			that.traj = getTrajectory(shotX, shotY);
+			that.vel = 10;
+			that.pos = [400, 540];
+			that.draw = function() {
+				ctx.fillStyle = "white";
+				ctx.beginPath();
+				ctx.arc(that.pos[0], that.pos[1], 5, 0, 2 * Math.PI);
+				ctx.fill();
+			}
+			that.move = function() {
+				that.pos[0] += that.vel * that.traj[0];
+				that.pos[1] -= that.vel * that.traj[1];
+				if (that.pos[0] < -10 || that.pos[0] > 810 || that.pos[1] < -10 || that.pos[1] > 610) {
+					shots.splice(shots.indexOf(that), 1);
+				}
+			}
+		};
 
-      // droit
-      canvasTerrainContext.fillStyle = couleurFilet;
-      canvasTerrainContext.fillRect (terrainLongueur/7 - filetLargeur/2, 0, filetLargeur, terrainLargeur);
-    }
+		function getTrajectory(coordx, coordy) {
+			var tempX, tempY, neg = false;
+			if (coordx == 400)  {
+				if (coordy <= 540) {
+					direction = degToRad(90);
+				}
+				else {
+					direction = degToRad(270);
+				}
+			}
+			else {
+				direction = Math.atan((540 - coordy)/(coordx - 400));
+				if (coordx < 400) {
+					neg = true;
+				}
+			}
+			tempX = Math.cos(direction);
+			tempY = Math.sin(direction);
+			if (neg) {
+				tempX = -tempX;
+				tempY = -tempY;
+				neg = false;
+			}
+			return [tempX, tempY];
+		};
 
-    var canvasPersosContext;
-    var largeurPerso = 40;
-    var longueurPerso = 40;
-    var positionXPersoA = terrainLongueur/2 - largeurPerso/2;
-    var positionYPersoA = 550 ;
-    var couleurPerso = "#8B0000";
-    var dessinerPersos = function() {
-      // le Perso A
-      canvasPersosContext.fillStyle = couleurPerso;
-      canvasPersosContext.fillRect (positionXPersoA, positionYPersoA, largeurPerso, longueurPerso);
-    }
+		function degToRad(angle) {
+			return angle * (Math.PI/180);
+		}; //end degToRad()
 
-    var animerPersoA = function() {
-      if (ALLER_DROITE && positionXPersoA > 0)
-        positionXPersoA+=5;
-      else if (ALLER_GAUCHE && positionXPersoA < terrainLargeur + longueurPerso)
-        positionXPersoA-=5;
-    }
+		function getMousePos(canvas, e) {
+			var rect = canvas.getBoundingClientRect();
+			return {
+				x: e.clientX - rect.left,
+				y: e.clientY - rect.top
+			};
+		};
 
-    var creerCanvasContext = function(name, width, height, zindex, color) {
-      var canvas = window.document.createElement("canvas");
-      canvas.id = name;
-      canvas.style.position = "absolute";
-      if ( color != undefined )
-        canvas.style.background = color;
-      canvas.style.zIndex = zindex;
-      canvas.width = width;
-      canvas.height = height;
-      document.body.appendChild(canvas);
-      return canvas.getContext('2d');
-    }
+		function process() {
+			for (var i = 0; i < shots.length; i++) {
+				shots[i].move();
+			};
+			for (var i = 0; i < aliens.length; i++) {
+				aliens[i].move();
+			};
+		};
 
-    var initialisation = function() {
-      // le code de l'initialisation
-      canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainLongueur, terrainLargeur, 0, couleurTerrain);
-      dessinerTerrain();
+		function draw() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.fillStyle = "black";
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			playerTurret.draw();
+			for (var i = 0; i < shots.length; i++) {
+				shots[i].draw();
+			};
+		}; //end draw()
 
-      canvasPersosContext = creerCanvasContext("canvasPersos", terrainLongueur, terrainLargeur, 1);
-      dessinerPersos();
+		function loop() {
+			process();
+			draw();
+			gloop = setTimeout(loop, 25);
+		}; //end loop()
 
-      requestAnimId = window.requestAnimationFrame(principale); // premier appel de principale au rafraichissement de la page
-    }
+		canvas.addEventListener('mousemove', function(e) {
+			var mousePos = getMousePos(canvas, e);
+			x = mousePos.x;
+			y = mousePos.y;
+		}, false);
 
-    var principale = function() {
-      // le code du jeu
-      canvasPersosContext.clearRect ( 0, 0 , terrainLongueur , terrainLargeur );
-      animerPersoA();
-      dessinerPersos();
-      requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
-    }
+		canvas.addEventListener('mousedown', function(e) {
+			var mousePos = getMousePos(canvas, e);
+			var shotX = mousePos.x;
+			var shotY = mousePos.y;
+			shots.push(new shotObject(shotX, shotY));
+			mouseDown = true;
+		}, false);
 
-    var onKeyDown = function(event) {
-        if ( event.keyCode == CODE_TOUCHE_GAUCHE ) {
-            ALLER_GAUCHE = true;
-        } else if ( event.keyCode == CODE_TOUCHE_DROITE ) {
-            ALLER_DROITE = true;
-        }
-    }
+		canvas.addEventListener('mouseup', function(e) {
+			mouseDown = false;
+		});
 
-    var onKeyUp = function(event) {
-        if ( event.keyCode == CODE_TOUCHE_GAUCHE ) {
-            ALLER_GAUCHE = false;
-        } else if ( event.keyCode == CODE_TOUCHE_DROITE ) {
-            ALLER_DROITE = false;
-        }
-    }
+		loop();
 
-    // association des méthodes aux évènements :
-    // onKeyDown = à l'appui de la touche
-    // onKeyUp = au relèvement de la touche
-    window.onkeydown = onKeyDown;
-    window.onkeyup = onKeyUp;
-
-    window.onload = initialisation; // appel de la fonction initialisation au chargement de la page
-
-   // fin du code isole
-  })();
-    </script>
-	<body>
-    </body>
-</html>
-
+					</script>
+				</section>
+			</body>
+		</html>
