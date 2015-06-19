@@ -40,36 +40,36 @@
 
     //le perso
     var canvasPersosContext;
-    var hauteurPerso = 40;
-    var largeurPerso = 40;
+    var hauteurPerso = 400;
+    var largeurPerso = 400;
     var positionXPerso = terrainlargeur/2 - hauteurPerso/2;
-    var positionYPerso = 700;
+    var positionYPerso = 300;
     var couleurPerso = "#8B0000";
     var positionPersoFinal = "";
     var dessinerPersos = function() {
       // la Perso A
       canvasPersosContext.fillStyle = couleurPerso;
-      canvasPersosContext.fillRect (positionXPerso, positionYPerso, hauteurPerso, largeurPerso);
+      canvasTerrainContext.drawImage(perso, positionXPerso, positionYPerso, hauteurPerso, largeurPerso);
     }
 
     var animerPersoA = function() {
       if (ALLER_DROITE){
-        positionXPerso = 682;
+        positionXPerso = 500;
         positionPersoFinal = "droite";
       }
       else if (ALLER_GAUCHE){
-        positionXPerso = 341;
+        positionXPerso = 150;
         positionPersoFinal = "gauche";
       }
     }
 
     var score = 0;
     var affichage_score = 'Score : '+score.toString();
-    var posXScore = 40;
+    var posXScore = 440;
     var posYScore = 55;
-    var posXScore_final = 500;
+    var posXScore_final = 450;
     var posYScore_final = 350;
-    var posXTour = 40;
+    var posXTour = 385;
     var posYTour = 100;
     var tour = 5;
     var compteur_tour = 'Tour restant : '+tour.toString();
@@ -85,18 +85,17 @@
       canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
-      canvasTerrainContext.drawImage(fond_score, 0, 0);
+      canvasTerrainContext.drawImage(fond_score, 0, 0, 1024, 768);
       canvasTerrainContext.font = '25pt serif';
       canvasTerrainContext.fillStyle = couleurScore;
       canvasTerrainContext.fillText (affichage_score_final, posXScore_final, posYScore_final);
-
       canvasDesc.addEventListener('click', onClick(), false);
     }
 
     var posXObjetD = 682;
     var posYObjetD = 0;
     var tailleObjet = 30;
-    var posXObjetG = 341;
+    var posXObjetG = 330;
     var posYObjetG = 0;
     var couleurObjetD;
     var couleurObjetG;
@@ -180,13 +179,10 @@
       canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainlargeur, terrainhauteur, 3);
       canvasTerrainContext.drawImage(fond_jeu, 0, 0);
       dessinerScore();
-
       canvasPersosContext = creerCanvasContext("canvasPersos", terrainlargeur, terrainhauteur, 4);
       dessinerPersos();
-
       canvasDescContext = creerCanvasContext("canvasDesc", terrainlargeur, terrainhauteur, 2);
-
-      requestAnimId = window.requestAnimationFrame(principale); // premier appel de principale au rafraichissement de la page
+      requestAnimId = window.requestAnimationFrame(principale);
     }
 
     var principale = function() {
@@ -199,9 +195,10 @@
       dessinerPersos();
       dessinerScore();
       if (tour <= 0){
-          affichage_score_final = 'Vous avez '+score.toString()+'bonne reponse sur 20'
+          affichage_score_final = 'Votre score est : '+score.toString()
           afficher_page_scoreFinal(affichage_score_final);
       }
+      else {
       if (posYObjetD < 400) {
         dessinerObjet();
         animerObjet();
@@ -239,7 +236,8 @@
           affichage_score = 'Score : '+score.toString();
           compteur_tour = 'Tour restant : '+tour.toString();
       }
-      requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
+      requestAnimId = window.requestAnimationFrame(principale);
+    }
     }
 
     var onKeyDown = function(event) {
@@ -258,15 +256,9 @@
         }
     }
 
-    // association des méthodes aux évènements :
-    // onKeyDown = à l'appui de la touche
-    // onKeyUp = au relèvement de la touche
     window.onkeydown = onKeyDown;
     window.onkeyup = onKeyUp;
-
-    window.onload = initialisation; // appel de la fonction initialisation au chargement de la page
-
-   // fin du code isole
+    window.onload = initialisation;
   })();
     </script>
 	<body>
