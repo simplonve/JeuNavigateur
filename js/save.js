@@ -101,6 +101,43 @@
         posYObjetG+=2;
     }
 
+    var onClick = function(){
+    var elem = document.getElementById('canvasDesc'),
+        elemLeft = elem.offsetLeft,
+        elemTop = elem.offsetTop,
+        context = elem.getContext('2d'),
+        elements = [];
+
+    // Add event listener for `click` events.
+    elem.addEventListener('click', function(event) {
+        var x = event.pageX - elemLeft,
+            y = event.pageY - elemTop;
+
+        // Collision detection between clicked offset and element.
+        elements.forEach(function(element) {
+            if (y > element.top && y < element.top + element.height
+                && x > element.left && x < element.left + element.width) {
+                score += 1;
+            }
+        });
+
+    }, false);
+    
+    // Add element.
+    elements.push({
+        colour: '#05EFFF',
+        width: 150,
+        height: 100,
+        top: 500,
+        left: 450
+    });
+
+    // Render elements.
+    elements.forEach(function(element) {
+        context.fillStyle = element.colour;
+        context.fillRect(element.left, element.top, element.width, element.height);
+    });}
+
     //var pour crée canvas
     var creerCanvasContext = function(name, width, height, zindex, color) {
       var canvas = window.document.createElement("canvas");
@@ -135,6 +172,7 @@
       canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       animerPersoA();
+      canvasDesc.addEventListener('click', onClick(), false);
       dessinerPersos();
       dessinerScore();
       if (posYObjetD < 400) {
