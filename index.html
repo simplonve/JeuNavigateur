@@ -61,7 +61,7 @@
     var posYScore = 55;
     var posXTour = 40;
     var posYTour = 100;
-    var tour = 20;
+    var tour = 2;
     var compteur_tour = 'Tour restant : '+tour.toString();
     var couleurScore = '#00FFFF';
     var dessinerScore = function () {
@@ -69,6 +69,15 @@
         canvasTerrainContext.fillStyle = couleurScore;
         canvasTerrainContext.fillText (affichage_score, posXScore, posYScore);
         canvasTerrainContext.fillText (compteur_tour, posXTour, posYTour);
+        if (tour < 0){
+          afficher_page_scoreFinal()
+        }
+    }
+    var afficher_page_scoreFinal = function(){
+
+      canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      changeBackground(document.body, "img/fondgame.svg");
+
     }
 
     var posXObjetD = 682;
