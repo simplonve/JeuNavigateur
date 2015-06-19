@@ -10,7 +10,6 @@
 
     var CODE_TOUCHE_GAUCHE = 37;
     var CODE_TOUCHE_DROITE = 39;
-    var CODE_TOUCHE_SPACE = 32;
     var ALLER_GAUCHE = false;
     var ALLER_DROITE = false;
     // pour que le requestAnim marche 'partout'
@@ -30,15 +29,6 @@
     var filethauteur = 6;
     var couleurTerrain = "#000000";
     var couleurFilet = "#008B8B";
-    var dessinerTerrain = function() {
-      // gauche
-      canvasTerrainContext.fillStyle = couleurFilet;
-      canvasTerrainContext.fillRect (terrainlargeur/1.2 - filethauteur/2, 0, filethauteur, terrainhauteur);
-
-      // droit
-      canvasTerrainContext.fillStyle = couleurFilet;
-      canvasTerrainContext.fillRect (terrainlargeur/7 - filethauteur/2, 0, filethauteur, terrainhauteur);
-    }
 
     //le perso
     var canvasPersosContext;
@@ -65,24 +55,45 @@
       }
     }
 
+    var score = 0
+    var posXScore = 40
+    var posYScore = 55
+    var couleurScore = '#00FFFF'
+    var dessinerScore = function () {
+        canvasTerrainContext.font = '25pt serif';
+        canvasTerrainContext.fillStyle = couleurScore;
+        canvasTerrainContext.fillText (score, posXScore, posYScore);
+    }
 
     var posXObjetD = 682;
     var posYObjetD = 0;
     var tailleObjet = 30;
     var posXObjetG = 341;
     var posYObjetG = 0;
-    var couleurObjet ='#4B0082';
+    var couleurObjetD;
+    var couleurObjetG;
+
+    var randomObjet = function() {
+        if (Math.random() > 0.5){
+            couleurObjetD = '#4B0082'
+            couleurObjetG = '#98FB98'
+        } else {
+            couleurObjetD = '#98FB98'
+            couleurObjetG = '#4B0082'
+        }
+    }
+
     var dessinerObjet = function(){
-        canvasDescContext.fillStyle = couleurObjet;
+        canvasDescContext.fillStyle = couleurObjetD;
         canvasDescContext.fillRect (posXObjetD, posYObjetD, tailleObjet, tailleObjet);
 
-        canvasDescContext.fillStyle = couleurObjet;
+        canvasDescContext.fillStyle = couleurObjetG;
         canvasDescContext.fillRect (posXObjetG, posYObjetG, tailleObjet, tailleObjet);
     }
 
     var animerObjet = function(){
-        posYObjetD+=1;
-        posYObjetG+=1;
+        posYObjetD+=2;
+        posYObjetG+=2;
     }
 
     //var pour crée canvas
@@ -101,8 +112,9 @@
 
     var initialisation = function() {
       // le code de l'initialisation
+      randomObjet();
       canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainlargeur, terrainhauteur, 0, couleurTerrain);
-      dessinerTerrain();
+      dessinerScore();
 
       canvasPersosContext = creerCanvasContext("canvasPersos", terrainlargeur, terrainhauteur, 1);
       dessinerPersos();
@@ -116,12 +128,53 @@
       // le code du jeu
       canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
       animerPersoA();
       dessinerPersos();
+      dessinerScore();
       if (posYObjetD < 400) {
         dessinerObjet();
         animerObjet();
-      }
+      } else if (positionPersoFinal == 'droite'){
+            if (couleurObjetD == '#4B0082') {
+                score -= 1
+                posYObjetD = 0
+                posYObjetG = 0
+                randomObjet();
+                positionPersoFinal = ''
+                positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+            }
+            else {
+                score += 1
+                posYObjetD = 0
+                posYObjetG = 0
+                randomObjet();
+                positionPersoFinal = ''
+                positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+            }
+      } else if (positionPersoFinal == 'gauche'){
+            if (couleurObjetG = '#4B0082') {
+                score -= 1
+                posYObjetD = 0
+                posYObjetG = 0
+                randomObjet();
+                positionPersoFinal = ''
+                positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+            } else {
+                score += 1
+                posYObjetD = 0
+                posYObjetG = 0
+                randomObjet();
+                positionPersoFinal = ''
+                positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+            }
+        } else {
+            score -= 1
+            posYObjetD = 0
+            posYObjetG = 0
+            randomObjet();
+            positionPersoFinal = ''
+        }
       requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
     }
 
@@ -155,4 +208,3 @@
 	<body>
     </body>
 </html>
-
