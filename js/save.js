@@ -55,18 +55,19 @@
       }
     }
 
-    var score = 0
-    var posXScore = 40
-    var posYScore = 55
-    var posXTour = 40
-    var posYTour = 100
-    var tour = 20
-    var compteur_tour = 'Tour restant : '+tour
-    var couleurScore = '#00FFFF'
+    var score = 0;
+    var affichage_score = 'Score : '+score.toString();
+    var posXScore = 40;
+    var posYScore = 55;
+    var posXTour = 40;
+    var posYTour = 100;
+    var tour = 20;
+    var compteur_tour = 'Tour restant : '+tour.toString();
+    var couleurScore = '#00FFFF';
     var dessinerScore = function () {
         canvasTerrainContext.font = '25pt serif';
         canvasTerrainContext.fillStyle = couleurScore;
-        canvasTerrainContext.fillText (score, posXScore, posYScore);
+        canvasTerrainContext.fillText (affichage_score, posXScore, posYScore);
         canvasTerrainContext.fillText (compteur_tour, posXTour, posYTour);
     }
 
@@ -148,6 +149,8 @@
             positionPersoFinal = '';
             positionXPerso = terrainlargeur/2 - hauteurPerso/2;
             tour-=1
+            affichage_score = 'Score : '+score.toString();
+            compteur_tour = 'Tour restant : '+tour.toString();
       }
       else if (couleurObjetG == '#98FB98' && positionPersoFinal == 'gauche'){
             score += 1;
@@ -157,6 +160,8 @@
             positionPersoFinal = '';
             positionXPerso = terrainlargeur/2 - hauteurPerso/2;
             tour-=1
+            affichage_score = 'Score : '+score.toString();
+            compteur_tour = 'Tour restant : '+tour.toString();
       }
       else{
           score -= 1;
@@ -166,6 +171,8 @@
           positionPersoFinal = '';
           positionXPerso = terrainlargeur/2 - hauteurPerso/2;
           tour-=1
+          affichage_score = 'Score : '+score.toString();
+          compteur_tour = 'Tour restant : '+tour.toString();
       }
       requestAnimId = window.requestAnimationFrame(principale); // rappel de principale au prochain rafraichissement de la page
     }
