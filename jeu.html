@@ -6,8 +6,6 @@
 	</head>
     <script>
        (function () {
-    // debut du code isole
-
     var CODE_TOUCHE_GAUCHE = 37;
     var CODE_TOUCHE_DROITE = 39;
     var ALLER_GAUCHE = false;
@@ -38,7 +36,7 @@
     var terrainhauteur = 768;
     var couleurTerrain = "#000000";
 
-    //le perso
+
     var canvasPersosContext;
     var hauteurPerso = 400;
     var largeurPerso = 400;
@@ -47,7 +45,6 @@
     var couleurPerso = "#8B0000";
     var positionPersoFinal = "";
     var dessinerPersos = function() {
-      // la Perso A
       canvasPersosContext.fillStyle = couleurPerso;
       canvasTerrainContext.drawImage(perso, positionXPerso, positionYPerso, hauteurPerso, largeurPerso);
     }
@@ -71,9 +68,9 @@
     var posYScore_final = 350;
     var posXTour = 385;
     var posYTour = 100;
-    var tour = 5;
+    var tour = 1;
     var compteur_tour = 'Tour restant : '+tour.toString();
-    var couleurScore = '#00FFFF';
+    var couleurScore = '#FFFFFF';
     var affichage_score_final;
     var dessinerScore = function () {
         canvasTerrainContext.font = '25pt serif';
@@ -89,7 +86,10 @@
       canvasTerrainContext.font = '25pt serif';
       canvasTerrainContext.fillStyle = couleurScore;
       canvasTerrainContext.fillText (affichage_score_final, posXScore_final, posYScore_final);
-      canvasDesc.addEventListener('click', onClick(), false);
+      canvasPersos.addEventListener('click', onClick(), false);
+      canvasPersosContext.font = '25pt serif';
+      canvasPersosContext.fillStyle = '#FFFFFF';
+      canvasPersosContext.fillText ('Rejouer ?', 445, 550);
     }
 
     var posXObjetD = 682;
@@ -123,7 +123,7 @@
     }
 
     var onClick = function(){
-        var elem = document.getElementById('canvasDesc'),
+        var elem = document.getElementById('canvasPersos'),
         elemLeft = elem.offsetLeft,
         elemTop = elem.offsetTop,
         context = elem.getContext('2d'),
@@ -148,11 +148,11 @@
 
     // Add element.
     elements.push({
-        colour: '#05EFFF',
-        width: 150,
-        height: 100,
+        colour: '#000000',
+        width: 170,
+        height: 80,
         top: 500,
-        left: 450
+        left: 440
     });
 
     // Render elements.
@@ -161,7 +161,6 @@
         context.fillRect(element.left, element.top, element.width, element.height);
     });}
 
-    //var pour crée canvas
     var creerCanvasContext = function(name, width, height, zindex, color) {
       var canvas = window.document.createElement("canvas");
       canvas.id = name;
