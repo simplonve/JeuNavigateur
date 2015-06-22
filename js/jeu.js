@@ -1,4 +1,4 @@
-       (function () {
+(function () {
     var CODE_TOUCHE_GAUCHE = 37;
     var CODE_TOUCHE_DROITE = 39;
     var ALLER_GAUCHE = false;
@@ -241,4 +241,4 @@
     window.onkeydown = onKeyDown;
     window.onkeyup = onKeyUp;
     window.onload = initialisation;
-  })();
+})();
