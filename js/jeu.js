@@ -26,10 +26,11 @@
     perso.src = 'img/geekdos.svg';
 
     var canvasFondContext;
+    var canvasPersosContext;
+    var canvasCodeContext;
     var Fondlargeur = 1024;
     var Fondhauteur = 768;
     var couleurFond = "#000000";
-    var canvasPersosContext;
     var hauteurPerso = 400;
     var largeurPerso = 400;
     var positionXPerso = Fondlargeur/2 - hauteurPerso/2;
@@ -82,34 +83,46 @@
       canvasPersosContext.fillText ('Rejouer ?', 445, 550);
     }
 
-    var posXObjetD = 682;
+    var posXObjetD = 552;
     var posYObjetD = 0;
-    var tailleObjet = 30;
-    var posXObjetG = 330;
+    var HauteurObjet = 300;
+    var LargeurObjet = 50;
+    var posXObjetG = 170;
     var posYObjetG = 0;
-    var couleurObjetD;
-    var couleurObjetG;
+    var ObjetD;
+    var ObjetG;
+    var img_code_D = new Image();
+    var img_code_G = new Image();
+    var getRandomInt = function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
     var randomObjet = function() {
-        if (Math.random() > 0.5){
-            couleurObjetD = '#4B0082'
-            couleurObjetG = '#98FB98'
-        } else {
-            couleurObjetD = '#98FB98'
-            couleurObjetG = '#4B0082'
-        }
+    if (Math.random() < 0.5) {
+        numero = getRandomInt(0, 10);
+        ObjetD = 'bon_code'
+        img_code_D.src = 'img/good/g' + numero + '.svg';
+        img_code_G.src = 'img/bad/b' + numero + '.svg';
+    }
+    else {
+        numero = getRandomInt(0, 10);
+        ObjetG = 'bon_code'
+        img_code_D.src = 'img/bad/b' + numero + '.svg';
+        img_code_G.src = 'img/good/g' + numero + '.svg';
+    }
     }
 
     var dessinerObjet = function(){
-        canvasCodeContext.fillStyle = couleurObjetD;
-        canvasCodeContext.fillRect (posXObjetD, posYObjetD, tailleObjet, tailleObjet);
+        canvasCodeContext.fillRect (posXObjetD, posYObjetD, HauteurObjet, LargeurObjet);
+        canvasCodeContext.drawImage(img_code_D, posXObjetD, posYObjetD, HauteurObjet, LargeurObjet);
 
-        canvasCodeContext.fillStyle = couleurObjetG;
-        canvasCodeContext.fillRect (posXObjetG, posYObjetG, tailleObjet, tailleObjet);
+        canvasCodeContext.fillRect (posXObjetG, posYObjetG, HauteurObjet, LargeurObjet);
+        canvasCodeContext.drawImage(img_code_G, posXObjetG, posYObjetG, HauteurObjet, LargeurObjet);
     }
 
     var animerObjet = function(){
-        posYObjetD+=2;
-        posYObjetG+=2;
+        posYObjetD+=1;
+        posYObjetG+=1;
     }
 
     var onClick = function(){
@@ -208,12 +221,12 @@
         dessinerObjet();
         animerObjet();
       }
-      else if (couleurObjetD == '#98FB98' && positionPersoFinal == 'droite'){
+      else if (ObjetD == 'bon_code' && positionPersoFinal == 'droite'){
             score += 1;
             tour-=1
             reinitialisation();
       }
-      else if (couleurObjetG == '#98FB98' && positionPersoFinal == 'gauche'){
+      else if (ObjetG == 'bon_code' && positionPersoFinal == 'gauche'){
             score += 1;
             tour-=1
             reinitialisation();
