@@ -68,7 +68,7 @@
     var posYScore_final = 350;
     var posXTour = 385;
     var posYTour = 100;
-    var tour = 1;
+    var tour = 3;
     var compteur_tour = 'Tour restant : '+tour.toString();
     var couleurScore = '#FFFFFF';
     var affichage_score_final;
@@ -79,9 +79,7 @@
         canvasTerrainContext.fillText (compteur_tour, posXTour, posYTour);
     }
     var afficher_page_scoreFinal = function(affichage_score_final){
-      canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
-      canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
-      canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      effacer_canvas();
       canvasTerrainContext.drawImage(fond_score, 0, 0, 1024, 768);
       canvasTerrainContext.font = '25pt serif';
       canvasTerrainContext.fillStyle = couleurScore;
@@ -161,6 +159,22 @@
         context.fillRect(element.left, element.top, element.width, element.height);
     });}
 
+    var reinitialisation = function(){
+        posYObjetD = 0;
+        posYObjetG = 0;
+        randomObjet();
+        positionPersoFinal = '';
+        positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+        affichage_score = 'Score : '+score.toString();
+        compteur_tour = 'Tour restant : '+tour.toString();
+    }
+
+    var effacer_canvas = function(){
+        canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+        canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+        canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+    }
+
     var creerCanvasContext = function(name, width, height, zindex, color) {
       var canvas = window.document.createElement("canvas");
       canvas.id = name;
@@ -175,7 +189,6 @@
     }
 
     var initialisation = function() {
-      // le code de l'initialisation
       randomObjet();
       canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainlargeur, terrainhauteur, 3);
       canvasTerrainContext.drawImage(fond_jeu, 0, 0);
@@ -187,10 +200,7 @@
     }
 
     var principale = function() {
-      // le code du jeu
-      canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
-      canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
-      canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+      effacer_canvas();
       canvasTerrainContext.drawImage(fond_jeu, 0, 0);
       animerPersoA();
       dessinerPersos();
@@ -206,36 +216,18 @@
       }
       else if (couleurObjetD == '#98FB98' && positionPersoFinal == 'droite'){
             score += 1;
-            posYObjetD = 0;
-            posYObjetG = 0;
-            randomObjet();
-            positionPersoFinal = '';
-            positionXPerso = terrainlargeur/2 - hauteurPerso/2;
             tour-=1
-            affichage_score = 'Score : '+score.toString();
-            compteur_tour = 'Tour restant : '+tour.toString();
+            reinitialisation();
       }
       else if (couleurObjetG == '#98FB98' && positionPersoFinal == 'gauche'){
             score += 1;
-            posYObjetD = 0;
-            posYObjetG = 0;
-            randomObjet();
-            positionPersoFinal = '';
-            positionXPerso = terrainlargeur/2 - hauteurPerso/2;
             tour-=1
-            affichage_score = 'Score : '+score.toString();
-            compteur_tour = 'Tour restant : '+tour.toString();
+            reinitialisation();
       }
       else{
           score -= 1;
-          posYObjetD = 0;
-          posYObjetG = 0;
-          randomObjet();
-          positionPersoFinal = '';
-          positionXPerso = terrainlargeur/2 - hauteurPerso/2;
           tour-=1
-          affichage_score = 'Score : '+score.toString();
-          compteur_tour = 'Tour restant : '+tour.toString();
+          reinitialisation();
       }
       requestAnimId = window.requestAnimationFrame(principale);
     }
