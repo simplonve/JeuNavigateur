@@ -19,6 +19,9 @@
     var fond_jeu = new Image();
     fond_jeu.src = 'img/ecranbureau.svg';
 
+    var fond_ecran = new Image();
+    fond_ecran.src = 'img/fondecran.svg';
+
     var perso = new Image();
     perso.src = 'img/geekdos.svg';
 
@@ -179,17 +182,19 @@
 
     var initialisation = function() {
       randomObjet();
-      canvasFondContext = creerCanvasContext("canvasFond", Fondlargeur, Fondhauteur, 3);
+      canvasCodeContext = creerCanvasContext("canvasCode", Fondlargeur, Fondhauteur, 1);
+      canvasCodeContext.drawImage(fond_ecran, 110, 100);
+      canvasFondContext = creerCanvasContext("canvasFond", Fondlargeur, Fondhauteur, 2);
       canvasFondContext.drawImage(fond_jeu, 0, 0);
+      canvasPersosContext = creerCanvasContext("canvasPersos", Fondlargeur, Fondhauteur, 3);
       dessinerScore();
-      canvasPersosContext = creerCanvasContext("canvasPersos", Fondlargeur, Fondhauteur, 4);
       dessinerPersos();
-      canvasCodeContext = creerCanvasContext("canvasCode", Fondlargeur, Fondhauteur, 2);
       requestAnimId = window.requestAnimationFrame(principale);
     }
 
     var principale = function() {
       effacer_canvas();
+      canvasCodeContext.drawImage(fond_ecran, 110, 100);
       canvasFondContext.drawImage(fond_jeu, 0, 0);
       animerPersoA();
       dessinerPersos();
