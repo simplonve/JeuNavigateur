@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8"/>
-		<title>jeu_nav</title>
-	</head>
-    <script>
        (function () {
     var CODE_TOUCHE_GAUCHE = 37;
     var CODE_TOUCHE_DROITE = 39;
@@ -20,7 +13,6 @@
 
     var requestAnimId;
 
-    //images
     var fond_score = new Image();
     fond_score.src = 'img/fondgame.svg';
 
@@ -30,23 +22,20 @@
     var perso = new Image();
     perso.src = 'img/geekdos.svg';
 
-    //les 2 barres vertical
-    var canvasTerrainContext;
-    var terrainlargeur = 1024;
-    var terrainhauteur = 768;
-    var couleurTerrain = "#000000";
-
-
+    var canvasFondContext;
+    var Fondlargeur = 1024;
+    var Fondhauteur = 768;
+    var couleurFond = "#000000";
     var canvasPersosContext;
     var hauteurPerso = 400;
     var largeurPerso = 400;
-    var positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+    var positionXPerso = Fondlargeur/2 - hauteurPerso/2;
     var positionYPerso = 300;
     var couleurPerso = "#8B0000";
     var positionPersoFinal = "";
     var dessinerPersos = function() {
       canvasPersosContext.fillStyle = couleurPerso;
-      canvasTerrainContext.drawImage(perso, positionXPerso, positionYPerso, hauteurPerso, largeurPerso);
+      canvasFondContext.drawImage(perso, positionXPerso, positionYPerso, hauteurPerso, largeurPerso);
     }
 
     var animerPersoA = function() {
@@ -73,17 +62,17 @@
     var couleurScore = '#FFFFFF';
     var affichage_score_final;
     var dessinerScore = function () {
-        canvasTerrainContext.font = '25pt serif';
-        canvasTerrainContext.fillStyle = couleurScore;
-        canvasTerrainContext.fillText (affichage_score, posXScore, posYScore);
-        canvasTerrainContext.fillText (compteur_tour, posXTour, posYTour);
+        canvasFondContext.font = '25pt serif';
+        canvasFondContext.fillStyle = couleurScore;
+        canvasFondContext.fillText (affichage_score, posXScore, posYScore);
+        canvasFondContext.fillText (compteur_tour, posXTour, posYTour);
     }
     var afficher_page_scoreFinal = function(affichage_score_final){
       effacer_canvas();
-      canvasTerrainContext.drawImage(fond_score, 0, 0, 1024, 768);
-      canvasTerrainContext.font = '25pt serif';
-      canvasTerrainContext.fillStyle = couleurScore;
-      canvasTerrainContext.fillText (affichage_score_final, posXScore_final, posYScore_final);
+      canvasFondContext.drawImage(fond_score, 0, 0, 1024, 768);
+      canvasFondContext.font = '25pt serif';
+      canvasFondContext.fillStyle = couleurScore;
+      canvasFondContext.fillText (affichage_score_final, posXScore_final, posYScore_final);
       canvasPersos.addEventListener('click', onClick(), false);
       canvasPersosContext.font = '25pt serif';
       canvasPersosContext.fillStyle = '#FFFFFF';
@@ -108,11 +97,11 @@
     }
 
     var dessinerObjet = function(){
-        canvasDescContext.fillStyle = couleurObjetD;
-        canvasDescContext.fillRect (posXObjetD, posYObjetD, tailleObjet, tailleObjet);
+        canvasCodeContext.fillStyle = couleurObjetD;
+        canvasCodeContext.fillRect (posXObjetD, posYObjetD, tailleObjet, tailleObjet);
 
-        canvasDescContext.fillStyle = couleurObjetG;
-        canvasDescContext.fillRect (posXObjetG, posYObjetG, tailleObjet, tailleObjet);
+        canvasCodeContext.fillStyle = couleurObjetG;
+        canvasCodeContext.fillRect (posXObjetG, posYObjetG, tailleObjet, tailleObjet);
     }
 
     var animerObjet = function(){
@@ -164,15 +153,15 @@
         posYObjetG = 0;
         randomObjet();
         positionPersoFinal = '';
-        positionXPerso = terrainlargeur/2 - hauteurPerso/2;
+        positionXPerso = Fondlargeur/2 - hauteurPerso/2;
         affichage_score = 'Score : '+score.toString();
         compteur_tour = 'Tour restant : '+tour.toString();
     }
 
     var effacer_canvas = function(){
-        canvasPersosContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
-        canvasDescContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
-        canvasTerrainContext.clearRect ( 0, 0 , terrainlargeur , terrainhauteur );
+        canvasPersosContext.clearRect ( 0, 0 , Fondlargeur , Fondhauteur );
+        canvasCodeContext.clearRect ( 0, 0 , Fondlargeur , Fondhauteur );
+        canvasFondContext.clearRect ( 0, 0 , Fondlargeur , Fondhauteur );
     }
 
     var creerCanvasContext = function(name, width, height, zindex, color) {
@@ -190,18 +179,18 @@
 
     var initialisation = function() {
       randomObjet();
-      canvasTerrainContext = creerCanvasContext("canvasTerrain", terrainlargeur, terrainhauteur, 3);
-      canvasTerrainContext.drawImage(fond_jeu, 0, 0);
+      canvasFondContext = creerCanvasContext("canvasFond", Fondlargeur, Fondhauteur, 3);
+      canvasFondContext.drawImage(fond_jeu, 0, 0);
       dessinerScore();
-      canvasPersosContext = creerCanvasContext("canvasPersos", terrainlargeur, terrainhauteur, 4);
+      canvasPersosContext = creerCanvasContext("canvasPersos", Fondlargeur, Fondhauteur, 4);
       dessinerPersos();
-      canvasDescContext = creerCanvasContext("canvasDesc", terrainlargeur, terrainhauteur, 2);
+      canvasCodeContext = creerCanvasContext("canvasCode", Fondlargeur, Fondhauteur, 2);
       requestAnimId = window.requestAnimationFrame(principale);
     }
 
     var principale = function() {
       effacer_canvas();
-      canvasTerrainContext.drawImage(fond_jeu, 0, 0);
+      canvasFondContext.drawImage(fond_jeu, 0, 0);
       animerPersoA();
       dessinerPersos();
       dessinerScore();
@@ -253,7 +242,3 @@
     window.onkeyup = onKeyUp;
     window.onload = initialisation;
   })();
-    </script>
-	<body>
-    </body>
-</html>
