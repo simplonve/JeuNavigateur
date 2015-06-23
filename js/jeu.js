@@ -21,6 +21,15 @@ var Fondlargeur = 1024;
 var Fondhauteur = 768;
 var couleurFond = "#000000";
 
+//**************************************************
+//variables son
+//**************************************************
+var son_deplacement_chaise = new Audio(son/)
+var son_cote_gagne = new Audio(son/)
+var son_cote_perdu = new Audio(son/)
+var son_score_final = new Audio(son/)
+//**************************************************
+
 var perso = function (Fondlargeur) {
     "use strict";
     this.hauteur = 400;
@@ -144,17 +153,6 @@ var affichage_tete_haute = function () {
         this.tour -= 1;
     };
 };
-
-//**************************************************
-//variables son
-//**************************************************
-var son_deplacement_chaise = new Audio(son/)
-var son_cote_gagne = new Audio(son/)
-var son_cote_perdu = new Audio(son/)
-var son_score_final = new Audio(son/)
-
-//**************************************************
-
 
 var onClick = function () {
         "use strict";
