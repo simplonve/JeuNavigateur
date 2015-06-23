@@ -4,12 +4,11 @@ var ALLER_GAUCHE = false;
 var ALLER_DROITE = false;
 var joueur;
 var code;
+var ath;
 var requestAnimId;
 var window;
 var document;
 
-var fond_score = new Image();
-fond_score.src = 'img/fondgame.svg';
 var fond_jeu = new Image();
 fond_jeu.src = 'img/ecranbureau.svg';
 var fond_ecran = new Image();
@@ -21,19 +20,6 @@ var canvasCodeContext;
 var Fondlargeur = 1024;
 var Fondhauteur = 768;
 var couleurFond = "#000000";
-
-var score = 0;
-var affichage_score = 'Score : '+score.toString();
-var posXScore = 440;
-var posYScore = 55;
-var posXScore_final = 340;
-var posYScore_final = 350;
-var posXTour = 385;
-var posYTour = 100;
-var tour = 3;
-var compteur_tour = 'Tour restant : '+tour.toString();
-var couleurScore = '#FFFFFF';
-var affichage_score_final;
 
 var perso = function (Fondlargeur) {
     "use strict";
@@ -112,25 +98,54 @@ var objetDescend = function () {
     };
 };
 
-var dessinerScore = function () {
+var affichage_tete_haute = function () {
+    this.fond_score = new Image();
+    this.fond_score.src = 'img/ecranbureau.svg';
+    this.affichage_score_final;
+    this.score = 0;
+    this.couleurScore = '#000000';
+    this.posXScore = 440;
+    this.posYScore = 55;
+    this.posXScore_final = 190;
+    this.posYScore_final = 250;
+    this.tour = 3;
+    this.posXTour = 385;
+    this.posYTour = 100;
+    this.affichage_score = 'Score : '+this.score.toString();
+    this.compteur_tour = 'Tour restant : '+this.tour.toString();
+
+    this.dessiner = function () {
         "use strict";
         canvasFondContext.font = '25pt serif';
-        canvasFondContext.fillStyle = couleurScore;
-        canvasFondContext.fillText (affichage_score, posXScore, posYScore);
-        canvasFondContext.fillText (compteur_tour, posXTour, posYTour);
-};
+        canvasFondContext.fillStyle = this.couleurScore;
+        canvasFondContext.fillText (this.affichage_score, this.posXScore, this.posYScore);
+        canvasFondContext.fillText (this.compteur_tour, this.posXTour, this.posYTour);
+    };
 
-var afficher_page_scoreFinal = function (affichage_score_final) {
-    "use strict";
-    effacer_canvas();
-    canvasFondContext.drawImage(fond_score, 0, 0, 1024, 768);
-    canvasFondContext.font = '25pt serif';
-    canvasFondContext.fillStyle = couleurScore;
-    canvasFondContext.fillText (affichage_score_final, posXScore_final, posYScore_final);
-    canvasPersos.addEventListener('click', onClick(), false);
-    canvasPersosContext.font = '25pt serif';
-    canvasPersosContext.fillStyle = '#FFFFFF';
-    canvasPersosContext.fillText ('Rejouer ?', 445, 550);
+    this.afficher_page_scoreFinal = function () {
+        "use strict";
+        effacer_canvas();
+        canvasFondContext.drawImage(this.fond_score, 0, 0, 1024, 768);
+        canvasFondContext.font = '25pt serif';
+        canvasFondContext.fillStyle = this.couleurScore;
+        canvasFondContext.fillText (this.affichage_score_final, this.posXScore_final, this.posYScore_final);
+        canvasPersos.addEventListener('click', onClick(), false);
+        canvasPersosContext.font = '25pt serif';
+        canvasPersosContext.fillStyle = '#FFFFFF';
+        canvasPersosContext.fillText ('Rejouer ?', 630, 257);
+    };
+
+    this.scoreUp = function (){
+        this.score += 1
+    };
+
+    this.scoreDown = function (){
+        this.score -= 1
+    };
+
+    this.tourDown = function (){
+        this.tour -= 1
+    };
 };
 
 var onClick = function () {
@@ -144,15 +159,15 @@ var onClick = function () {
                 // Collision detection between clicked offset and element.
                 elements.forEach(function (element) {
                         if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
-                                score = 0;
-                                tour = 20;
+                                ath.score = 0;
+                                ath.tour = 20;
                                 requestAnimId = window.requestAnimationFrame(principale);
                         }
                 });
         }, false);
 
         // Add element.
-        elements.push({ colour: '#000000', width: 170, height: 80, top: 500, left: 440 });
+        elements.push({ colour: '#000000', width: 170, height: 80, top: 210, left: 610 });
 
         // Render elements.
         elements.forEach(function (element) {
@@ -170,8 +185,8 @@ var reinitialisation = function () {
         code.random();
         joueur.positionFinal = '';
         joueur.positionX = Fondlargeur/2 - joueur.hauteur/2;
-        affichage_score = 'Score : '+score.toString();
-        compteur_tour = 'Tour restant : '+tour.toString();
+        ath.affichage_score = 'Score : '+ath.score.toString();
+        ath.compteur_tour = 'Tour restant : '+ath.tour.toString();
 };
 
 var effacer_canvas = function () {
@@ -186,6 +201,7 @@ var creerCanvasContext = function (name, width, height, zindex, color) {
         var canvas = window.document.createElement("canvas");
         canvas.id = name;
         canvas.style.position = "absolute";
+        canvas.style.left = "18%";
         if ( color !== undefined ){
                 canvas.style.background = color;
         }
@@ -200,6 +216,7 @@ var initialisation = function () {
         "use strict";
         joueur = new perso(Fondlargeur);
         code = new objetDescend();
+        ath = new affichage_tete_haute();
         code.random();
         canvasCodeContext = creerCanvasContext("canvasCode", Fondlargeur, Fondhauteur, 1);
         canvasCodeContext.drawImage(fond_ecran, 110, 100);
@@ -217,11 +234,11 @@ var principale = function () {
     canvasFondContext.drawImage(fond_jeu, 0, 0);
     joueur.animer();
     joueur.dessiner();
-    dessinerScore();
+    ath.dessiner();
     }
-    if (tour <= 0){
-        affichage_score_final = 'Votre score est : '+score.toString();
-        afficher_page_scoreFinal(affichage_score_final);
+    if (ath.tour <= 0){
+        ath.affichage_score_final = 'Votre score est : '+ath.score.toString();
+        ath.afficher_page_scoreFinal();
     }
     else {
     if (code.posYDroite < 400) {
@@ -229,18 +246,18 @@ var principale = function () {
         code.animer();
     }
     else if (code.ObjetD === true && joueur.positionFinal == 'droite'){
-        score += 1;
-        tour-=1;
+        ath.scoreUp();
+        ath.tourDown();
         reinitialisation();
     }
     else if (code.ObjetG === true && joueur.positionFinal == 'gauche'){
-        score += 1;
-        tour-=1;
+        ath.scoreUp();
+        ath.tourDown();
         reinitialisation();
     }
     else{
-        score -= 1;
-        tour-=1;
+        ath.scoreDown();
+        ath.tourDown();
         reinitialisation();
     }
     requestAnimId = window.requestAnimationFrame(principale);

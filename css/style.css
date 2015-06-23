@@ -2,6 +2,7 @@
 	font-family: 'Raleway-Medium';
 	src:url('Raleway-Medium.ttf') format('truetype');
 }
+
 @-webkit-keyframes rotate {
   0% {
         -webkit-transform: rotate(-15deg);
@@ -15,6 +16,7 @@
         -webkit-transform: rotate(-15deg);
     }
 }
+
 @-moz-keyframes rotate {
   0% {
         -moz-transform: rotate(-10deg);
@@ -28,6 +30,7 @@
         -moz-transform: rotate(-10deg);
     }
 }
+
 html, body {
   margin: 0;
   height: 100%;
@@ -61,6 +64,7 @@ h1 {
     width: 50%;
     margin-bottom: 10%;
 }
+
 .start {
   display: block;
   position: absolute;
@@ -70,6 +74,7 @@ h1 {
   z-index: 100;
   left: 0;
 }
+
 h2 {
     margin-left: auto;
     margin-right: auto;
@@ -78,6 +83,7 @@ h2 {
     color:red;
     font-size: 2em;
 }
+
 .visuel {
   display: block;
   float: left;
