@@ -36,7 +36,6 @@ var perso = function (Fondlargeur) {
     };
 
     this.animer = function () {
-            "use strict";
             if (ALLER_DROITE){
                     this.positionX = 500;
                     this.positionFinal = "droite";
@@ -49,6 +48,7 @@ var perso = function (Fondlargeur) {
 };
 
 var objetDescend = function () {
+    "use strict";
     this.posXDroite = 538;
     this.posYDroite = 0;
     this.largeurObjet = 330;
@@ -62,12 +62,10 @@ var objetDescend = function () {
     this.numero;
 
     this.getRandomInt = function (min, max) {
-            "use strict";
             return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     this.random = function () {
-            "use strict";
             if (Math.random() < 0.5) {
                 this.numero = this.getRandomInt(1, 10);
                 this.ObjetD = true;
@@ -83,7 +81,6 @@ var objetDescend = function () {
     };
 
     this.dessiner = function () {
-            "use strict";
             canvasCodeContext.fillRect (this.posXDroite, this.posYDroite, this.largeurObjet, this.hauteurObjet);
             canvasCodeContext.drawImage(this.img_code_D, this.posXDroite, this.posYDroite, this.largeurObjet, this.hauteurObjet);
 
@@ -92,13 +89,13 @@ var objetDescend = function () {
     };
 
     this.animer = function () {
-            "use strict";
             this.posYDroite+=1;
             this.posYGauche+=1;
     };
 };
 
 var affichage_tete_haute = function () {
+    "use strict";
     this.fond_score = new Image();
     this.fond_score.src = 'img/ecranbureau.svg';
     this.affichage_score_final;
@@ -108,7 +105,7 @@ var affichage_tete_haute = function () {
     this.posYScore = 55;
     this.posXScore_final = 190;
     this.posYScore_final = 250;
-    this.tour = 3;
+    this.tour = 20;
     this.posXTour = 385;
     this.posYTour = 100;
     this.affichage_score = 'Score : '+this.score.toString();
@@ -136,15 +133,15 @@ var affichage_tete_haute = function () {
     };
 
     this.scoreUp = function (){
-        this.score += 1
+        this.score += 1;
     };
 
     this.scoreDown = function (){
-        this.score -= 1
+        this.score -= 1;
     };
 
     this.tourDown = function (){
-        this.tour -= 1
+        this.tour -= 1;
     };
 };
 
@@ -237,7 +234,7 @@ var principale = function () {
     ath.dessiner();
     }
     if (ath.tour <= 0){
-        ath.affichage_score_final = 'Votre score est : '+ath.score.toString();
+        ath.affichage_score_final = 'Votre avez : '+ath.score.toString();
         ath.afficher_page_scoreFinal();
     }
     else {
