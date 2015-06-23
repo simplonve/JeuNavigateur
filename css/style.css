@@ -4,15 +4,15 @@
 }
 @-webkit-keyframes rotate {
   0% {
-        -webkit-transform: rotate(-45deg);
+        -webkit-transform: rotate(-15deg);
     }
 
     50% {
-        -webkit-transform: rotate(45deg);
+        -webkit-transform: rotate(15deg);
     }
 
     100% {
-        -webkit-transform: rotate(-45deg);
+        -webkit-transform: rotate(-15deg);
     }
 }
 @-moz-keyframes rotate {
@@ -28,65 +28,75 @@
         -moz-transform: rotate(-10deg);
     }
 }
-html, body{
-	width: 60%;
-	margin: 0;
-	padding: 0;
-	position: absolute;
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  float: left;
+  font-family: "Raleway-Medium";
 }
-h1 {
-	width:100%;
-	display: block;
-	float:left;
-	font-size: 4em;
-	font-family: 'Raleway-Medium';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
 }
+
 .title {
-	position: absolute;
-	width:100%;
-	display: block;
-	margin-left: 30%;
-	margin-top: 10%;
+  display: block;
+  position: absolute;
+  top: 20px;
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+  left: 0;
+}
+
+h1 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    margin-bottom: 10%;
+}
+.start {
+  display: block;
+  position: absolute;
+  top: 800px;
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+  left: 0;
+}
+h2 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    margin-bottom: 10%;
+    color:red;
+    font-size: 2em;
 }
 .visuel {
-	position: absolute;
-	width:100%;
-	float:left;
-	display: block;
-	margin-left: 5%;
-	margin-top: 55%;
-	box-shadow: 10px 0px 100px black;
+  display: block;
+  float: left;
+  width: 80%;
+  box-shadow: 10px 0px 100px black;
 }
-.fondnav {
-	position: absolute;
-	width:100%;
-	float:left;
-	display: block;
-	margin-top: 2%;
-	margin-left:172%;
 
-}
 .tete {
-	position: absolute;
-	width:100%;
-	float:left;
-	display: block;
-	margin-left: 46%;
-	margin-top: 65%;
+  position: absolute;
+  top: 35%;
+  left: 36.66%;
+  display: block;
+  width: 12.5%;
+}
 
-}
 .hover:hover {
-		  -webkit-transform-origin:50% 0%;
-			-webkit-animation: rotate 5s infinite ease-in-out;
-			-moz-transform-origin:50% 100%;
-			-moz-animation: rotate 5s infinite ease-in-out;
-}
-.layout_nav {
-	margin-left:200%;
-	margin-top: 20%;
-	position: absolute;
-	z-index: 1;
-	font-family: 'Raleway-Medium';
-	font-size: 3em;
+      -webkit-transform-origin:50% 100%;
+      -webkit-animation: rotate 5s infinite ease-in-out;
+      -moz-transform-origin:50% 100%;
+      -moz-animation: rotate 5s infinite ease-in-out;
 }
 
