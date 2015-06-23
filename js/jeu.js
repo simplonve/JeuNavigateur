@@ -145,6 +145,17 @@ var affichage_tete_haute = function () {
     };
 };
 
+//**************************************************
+//variables son
+//**************************************************
+var son_deplacement_chaise = new Audio(son/)
+var son_cote_gagne = new Audio(son/)
+var son_cote_perdu = new Audio(son/)
+var son_score_final = new Audio(son/)
+
+//**************************************************
+
+
 var onClick = function () {
         "use strict";
         var elem = document.getElementById('canvasPersos'), elemLeft = elem.offsetLeft, elemTop = elem.offsetTop, context = elem.getContext('2d'), elements = [];
